@@ -1,0 +1,35 @@
+# Visual Studio cache
+.vs/
+Режим вывода команд на экран (ECHO) включен.
+# Build folders
+bin/
+obj/
+out/
+Режим вывода команд на экран (ECHO) включен.
+# User-specific files
+*.user
+*.suo
+Режим вывода команд на экран (ECHO) включен.
+# Logs
+*.log
+Режим вывода команд на экран (ECHO) включен.
+# NuGet
+packages/
+*.nupkg
+Режим вывода команд на экран (ECHO) включен.
+# Node modules
+node_modules/
+Режим вывода команд на экран (ECHO) включен.
+# Environment files
+.env
+.env.*
+Режим вывода команд на экран (ECHO) включен.
+# IIS Express
+*.dbmdl
+Режим вывода команд на экран (ECHO) включен.
+# Rider / JetBrains
+.idea/
+Режим вывода команд на экран (ECHO) включен.
+# System files
+Thumbs.db
+.DS_Store
