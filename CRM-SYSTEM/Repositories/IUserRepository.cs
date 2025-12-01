@@ -5,6 +5,8 @@ namespace CRM_SYSTEM.Repositories
     public interface IUserRepository
     {
         public User? GetByLogin(string login);
+        public User? GetById(int id);
         public User? Add(User request);
+        public User? Update(User user);
     }
 }

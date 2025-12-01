@@ -3,6 +3,8 @@ using CRM_SYSTEM.DTO.Users;
 using CRM_SYSTEM.Models;
 using CRM_SYSTEM.Repositories;
 using System.Net.Mail;
+using System.Security.Claims;
+using System.Xml.Linq;
 
 namespace CRM_SYSTEM.Services
 {
@@ -67,6 +69,28 @@ namespace CRM_SYSTEM.Services
                 login = newUser.login,
                 phone = newUser.phone,  
                 email = newUser.email,
+            };
+        }
+        public UpdatedResponse Update(int userId,UpdateRequest request)
+        {
+            var user = userRepository.GetById(request.id);  
+
+            if (user == null)
+                throw new UserNotFoundException();
+
+            if (!string.IsNullOrEmpty(request.name)) user.name = request.name;
+
+            if (!string.IsNullOrEmpty(request.surname)) user.surname = request.surname;
+
+            if (!string.IsNullOrEmpty(request.password)) user.password = request.password;//BCrypt.Net.BCrypt.HashPassword(request.password);
+
+            userRepository.Update(user);
+
+            return new UpdatedResponse
+            {
+                id = user.id,
+                name = user.name,
+                surname = user.surname
             };
         }
     }

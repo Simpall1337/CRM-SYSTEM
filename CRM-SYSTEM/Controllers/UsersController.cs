@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CRM_SYSTEM.Controllers
 {
@@ -40,7 +41,7 @@ namespace CRM_SYSTEM.Controllers
             {
                 return Unauthorized(new { message = ex.Message }); 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, new { message = "Internal server error"});
             }
@@ -69,9 +70,28 @@ namespace CRM_SYSTEM.Controllers
                 return StatusCode(500, new { message = "Internal server error"});
             }
         }
+        [HttpPut("/update")]
+        public IActionResult UpdateUser([FromBody] UpdateRequest request)
+        {
+            try
+            {
+                // var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub"); FOR JWT AUTHENTICATION
+                // if (userIdClaim == null) return Unauthorized();
+
+                var userResponse = userService.Update(request.id, request);
+
+                return Ok("Login Successful");
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error" });
+            }
+        }   
         [HttpDelete("/delete")]
         public IActionResult DeleteUser(int id)
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
+
             return Ok("Login Successful");
         }
     }

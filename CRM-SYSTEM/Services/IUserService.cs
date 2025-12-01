@@ -6,5 +6,6 @@ namespace CRM_SYSTEM.Services
     {
         public UserResponse Login(LoginRequest request);
         public UserResponse Register(RegisterRequest request);
+        public UpdatedResponse Update(int userId, UpdateRequest update);
     }
 }
