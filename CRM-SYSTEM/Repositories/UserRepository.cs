@@ -10,9 +10,19 @@ namespace CRM_SYSTEM.Repositories
         {
             return dbContext.Users.FirstOrDefault(x => x.login == login);
         }
+        public User? GetById(int id)
+        {
+            return dbContext.Users.FirstOrDefault(x => x.id == id);
+        }
         public User? Add(User user)
         {
             dbContext.Users.Add(user);
+            dbContext.SaveChanges();
+            return user;
+        }
+        public User? Update(User user)
+        {
+            dbContext.Users.Update(user);
             dbContext.SaveChanges();
             return user;
         }
