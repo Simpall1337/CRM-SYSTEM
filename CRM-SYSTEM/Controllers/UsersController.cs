@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace CRM_SYSTEM.Controllers
@@ -16,13 +17,15 @@ namespace CRM_SYSTEM.Controllers
     //[Authorize]
     [AllowAnonymous]
     [ApiController]
-    public class UsersController(IUserService userService) : ControllerBase
+    public class UsersController(IUserService userService, ILogger<UsersController> logger) : ControllerBase
     {
         [HttpPost("/login")]
         public IActionResult LoginUser([FromBody] LoginRequest request)
         {
             try
             {
+                //logger.LogInformation("Запрос пользователя ID = {id}", request.login);
+
                 var userData = userService.Login(request);
 
                 var response = new
@@ -35,14 +38,17 @@ namespace CRM_SYSTEM.Controllers
             }
             catch (UserNotFoundException ex)
             {
+                logger.LogError(ex, $"Error in LoginUser, login: {request.login},");
                 return NotFound(new { message = ex.Message }); 
             }
             catch (InvalidPasswordException ex)
             {
+                logger.LogError(ex, $"Error in LoginUser, login: {request.login},");
                 return Unauthorized(new { message = ex.Message }); 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, $"Error in LoginUser, login: {request.login},");
                 return StatusCode(500, new { message = "Internal server error"});
             }
         }

@@ -2,13 +2,15 @@ using CRM_SYSTEM.Data;
 using CRM_SYSTEM.Repositories;
 using CRM_SYSTEM.Services;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Logging.ClearProviders(); 
+builder.Logging.AddSerilog();    
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -20,9 +22,21 @@ builder.Services.AddScoped<IUserRepository, UserRepository>()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+var dbPath = Path.Combine(builder.Environment.ContentRootPath, "Data", "db.db");
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.SQLite(dbPath, tableName: "Logs")
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
