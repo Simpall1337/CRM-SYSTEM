@@ -48,7 +48,7 @@ namespace CRM_SYSTEM.Services
 
             var hashedPassword = request.password;//BCrypt.Net.BCrypt.HashPassword(request.password);
 
-            var newUser = new User
+            var newUser = new Users
             {
                 name = request.name,
                 surname = request.surname,

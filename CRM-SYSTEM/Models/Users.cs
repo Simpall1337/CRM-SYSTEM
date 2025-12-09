@@ -2,7 +2,7 @@
 
 namespace CRM_SYSTEM.Models
 {
-    public class User
+    public class Users
     {
         [Key]
         public int id { get; set; }

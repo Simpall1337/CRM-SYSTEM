@@ -24,8 +24,6 @@ namespace CRM_SYSTEM.Controllers
         {
             try
             {
-                //logger.LogInformation("Запрос пользователя ID = {id}", request.login);
-
                 var userData = userService.Login(request);
 
                 var response = new
@@ -69,10 +67,12 @@ namespace CRM_SYSTEM.Controllers
             }
             catch (UserAlreadyExistsException ex)
             {
+                logger.LogError(ex, $"Error in RegisterUser");
                 return Conflict(new { message = ex.Message });
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, $"Error in RegisterUser");
                 return StatusCode(500, new { message = "Internal server error"});
             }
         }
@@ -90,15 +90,25 @@ namespace CRM_SYSTEM.Controllers
             }
             catch(Exception ex)
             {
+                logger.LogError(ex, $"Error in UpdateUser, {request.id}");
                 return StatusCode(500, new { message = "Internal server error" });
             }
         }   
         [HttpDelete("/delete")]
         public IActionResult DeleteUser(int id)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
+                
+                return Ok("Deleted USER");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error in DeleteUser. UserId: {Id}", id);
+                return StatusCode(500, new { message = "Internal server error" });
+            }
 
-            return Ok("Login Successful");
         }
     }
 }
