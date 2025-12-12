@@ -14,17 +14,19 @@ namespace CRM_SYSTEM.Repositories
         {
             return dbContext.Users.FirstOrDefault(x => x.id == id);
         }
-        public Users? Add(Users user)
+        public void Add(Users user)
         {
             dbContext.Users.Add(user);
             dbContext.SaveChanges();
-            return user;
         }
-        public Users? Update(Users user)
+        public void Update()
         {
-            dbContext.Users.Update(user);
             dbContext.SaveChanges();
-            return user;
+        }
+        public void Delete(Users user)
+        {
+            dbContext.Users.Remove(user);
+            dbContext.SaveChanges();
         }
     }
 }

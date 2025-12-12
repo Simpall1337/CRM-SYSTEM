@@ -84,7 +84,7 @@ namespace CRM_SYSTEM.Services
 
             if (!string.IsNullOrEmpty(request.password)) user.password = request.password;//BCrypt.Net.BCrypt.HashPassword(request.password);
 
-            userRepository.Update(user);
+            userRepository.Update();
 
             return new UpdatedResponse
             {

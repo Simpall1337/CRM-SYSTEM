@@ -12,3 +12,4 @@ namespace CRM_SYSTEM.Services
         public void DeleteClient(int id);
     }
 }
+

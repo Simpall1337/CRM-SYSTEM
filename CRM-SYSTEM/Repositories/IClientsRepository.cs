@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Http.Metadata;
 
 namespace CRM_SYSTEM.Repositories
 {
-    public interface IClientsRepository
+    public interface IClientsRepository: IRepository<Clients>
     {
         public IEnumerable<Clients> GetAllClients();
-        public ClientsCreateResponse CreateClients(Clients client);
-        public ClientsUpdateResponse UpdateClient(Clients client);
-        public void DeleteClient(int id);
+        public bool GetAnyPhone(string phone);
+        public bool GetAnyEmail(string email);
     }
 }

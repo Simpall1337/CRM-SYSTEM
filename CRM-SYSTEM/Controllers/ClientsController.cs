@@ -9,7 +9,7 @@ namespace CRM_SYSTEM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientsController(IClientsService clientsService, ILogger<UsersController> logger) : ControllerBase
+    public class ClientsController(IClientsService clientsService, ILogger<ClientsController> logger) : ControllerBase
     {
         [HttpGet("/clients")]
         public IActionResult GetClients()

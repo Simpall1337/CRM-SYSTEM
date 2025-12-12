@@ -12,7 +12,7 @@ namespace CRM_SYSTEM.Data
         }
 
         public DbSet<Users> Users { get; set; }
-        public DbSet<Role> Role { get; set; }
+        public DbSet<Roles> Roles { get; set; }
         public DbSet<Clients> Clients { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace CRM_SYSTEM.Models
 {
-    public class Role
+    public class Roles
     {
         public int id { get; set; }
         public string name { get; set; }
