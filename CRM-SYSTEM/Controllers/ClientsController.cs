@@ -1,93 +1,45 @@
-﻿using CRM_SYSTEM.CustomExceptions;
-using CRM_SYSTEM.DTO.Clients;
-using CRM_SYSTEM.Models;
-using CRM_SYSTEM.Services;
-using Microsoft.AspNetCore.Http;
+﻿using CRM_SYSTEM.DTO.Clients;
+using CRM_SYSTEM.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM_SYSTEM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientsController(IClientsService clientsService, ILogger<ClientsController> logger) : ControllerBase
+    public class ClientsController(IClientsService clientsService) : ControllerBase
     {
-        [HttpGet("/clients")]
+        [HttpGet]
         public IActionResult GetClients()
         {
-            try
-            {
-                var clients = clientsService.GetAllClients();
-                return Ok(clients);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error in GetClients");
-                return StatusCode(500, new { message = "Internal server error" });
-            }
-
+            var clients = clientsService.GetAllClients();
+            return Ok(clients);
         }
-        [HttpPost("/clients")]
+
+        [HttpPost]
         public IActionResult CreateClient([FromBody] ClientsCreateRequest request)
         {
-            try
-            {
-                var clientData = clientsService.CreateClients(request);
+            var clientData = clientsService.CreateClients(request);
 
-                var response = new
-                {
-                    Message = "Client Creation Successful",
-                    Client = clientData
-                };
-                return Ok(response);
-            }
-            catch (ClientAlreadyExistsException ex)
+            var response = new
             {
-                logger.LogError(ex, "Error in CreateClient");
-                return Conflict(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error in CreateClient");
-                return StatusCode(500, new { message = "Internal server error" });
-            }
+                Message = "Client Creation Successful",
+                Client = clientData
+            };
+            return Created($"/api/clients/{clientData.id}", response);
         }
-        [HttpPut("/clients")]
+
+        [HttpPut]
         public IActionResult UpdateClient([FromBody] ClientsUpdateRequest request)
         {
-            try
-            {
-                var updatedClient = clientsService.UpdateClient(request);
-                return Ok(updatedClient);
-            }
-            catch (ClientNotFoundException ex)
-            {
-                logger.LogError(ex, "Error in UpdateClient");
-                return NotFound(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error in UpdateClient");
-                return StatusCode(500, new { message = "Internal server error" });
-            }
+            var updatedClient = clientsService.UpdateClient(request);
+            return Ok(updatedClient);
         }
-        [HttpDelete("/clients")]
+
+        [HttpDelete("{id}")]
         public IActionResult DeleteClient(int id)
         {
-            try
-            {
-                clientsService.DeleteClient(id);
-                return NoContent();
-            }
-            catch (ClientNotFoundException ex)
-            {
-                logger.LogError(ex, "Error in DeleteClient");
-                return NotFound(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error in DeleteClient");
-                return StatusCode(500, new { message = "Internal server error" });
-            }
+            clientsService.DeleteClient(id);
+            return NoContent();
         }
     }
 }

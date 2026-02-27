@@ -1,7 +1,7 @@
 ﻿using CRM_SYSTEM.DTO.Roles;
 using CRM_SYSTEM.Models;
 
-namespace CRM_SYSTEM.Services
+namespace CRM_SYSTEM.Services.Interfaces
 {
     public interface IRoleService
     {

@@ -1,7 +1,8 @@
 ﻿using CRM_SYSTEM.CustomExceptions;
 using CRM_SYSTEM.DTO.Users;
 using CRM_SYSTEM.Models;
-using CRM_SYSTEM.Repositories;
+using CRM_SYSTEM.Repositories.Interfaces;
+using CRM_SYSTEM.Services.Interfaces;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Xml.Linq;
@@ -71,7 +72,7 @@ namespace CRM_SYSTEM.Services
                 email = newUser.email,
             };
         }
-        public UpdatedResponse Update(int userId,UpdateRequest request)
+        public UpdatedResponse Update(int userId, UpdateRequest request)
         {
             var user = userRepository.GetById(request.id);  
 
@@ -92,6 +93,16 @@ namespace CRM_SYSTEM.Services
                 name = user.name,
                 surname = user.surname
             };
+        }
+
+        public void Delete(int userId)
+        {
+            var user = userRepository.GetById(userId);
+
+            if (user == null)
+                throw new UserNotFoundException();
+
+            userRepository.Delete(user);
         }
     }
 }

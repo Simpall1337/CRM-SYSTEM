@@ -1,15 +1,7 @@
-﻿using CRM_SYSTEM.CustomExceptions;
-using CRM_SYSTEM.Data;
-using CRM_SYSTEM.DTO.Users;
-using CRM_SYSTEM.Repositories;
-using CRM_SYSTEM.Services;
+﻿using CRM_SYSTEM.DTO.Users;
+using CRM_SYSTEM.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 
 namespace CRM_SYSTEM.Controllers
 {
@@ -17,98 +9,46 @@ namespace CRM_SYSTEM.Controllers
     //[Authorize]
     [AllowAnonymous]
     [ApiController]
-    public class UsersController(IUserService userService, ILogger<UsersController> logger) : ControllerBase
+    public class UsersController(IUserService userService) : ControllerBase
     {
-        [HttpPost("/login")]
+        [HttpPost]
         public IActionResult LoginUser([FromBody] LoginRequest request)
         {
-            try
-            {
-                var userData = userService.Login(request);
+            var userData = userService.Login(request);
 
-                var response = new
-                {
-                    Message = "Login Successful",
-                    User = userData
-                };
+            var response = new
+            {
+                Message = "Login Successful",
+                User = userData
+            };
 
-                return Ok(response);
-            }
-            catch (UserNotFoundException ex)
-            {
-                logger.LogError(ex, $"Error in LoginUser, login: {request.login},");
-                return NotFound(new { message = ex.Message }); 
-            }
-            catch (InvalidPasswordException ex)
-            {
-                logger.LogError(ex, $"Error in LoginUser, login: {request.login},");
-                return Unauthorized(new { message = ex.Message }); 
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, $"Error in LoginUser, login: {request.login},");
-                return StatusCode(500, new { message = "Internal server error"});
-            }
+            return Ok(response);
         }
-        [HttpPost("/register")]
+        [HttpPost]
         public IActionResult RegisterUser([FromBody] RegisterRequest request)
         {
-            try
-            {
-                var userData = userService.Register(request);
+            var userData = userService.Register(request);
 
-                var response = new
-                {
-                    Message = "Registration Successful",
-                    User = userData
-                };
+            var response = new
+            {
+                Message = "Registration Successful",
+                User = userData
+            };
 
-                return Created($"/api/users/{userData.id}", response);
-            }
-            catch (UserAlreadyExistsException ex)
-            {
-                logger.LogError(ex, $"Error in RegisterUser");
-                return Conflict(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, $"Error in RegisterUser");
-                return StatusCode(500, new { message = "Internal server error"});
-            }
+            return Created($"/api/users/{userData.id}", response);
         }
-        [HttpPut("/update")]
+        [HttpPut]
         public IActionResult UpdateUser([FromBody] UpdateRequest request)
         {
-            try
-            {
-                // var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub"); FOR JWT AUTHENTICATION
-                // if (userIdClaim == null) return Unauthorized();
+            var userResponse = userService.Update(request.id, request);
+            return Ok(userResponse);
+        }
 
-                var userResponse = userService.Update(request.id, request);
-
-                return Ok("Login Successful");
-            }
-            catch(Exception ex)
-            {
-                logger.LogError(ex, $"Error in UpdateUser, {request.id}");
-                return StatusCode(500, new { message = "Internal server error" });
-            }
-        }   
-        [HttpDelete("/delete")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {
-            try
-            {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
-                
-                return Ok("Deleted USER");
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error in DeleteUser. UserId: {Id}", id);
-                return StatusCode(500, new { message = "Internal server error" });
-            }
-
+            userService.Delete(id);
+            return NoContent();
         }
     }
 }

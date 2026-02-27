@@ -2,6 +2,7 @@
 using CRM_SYSTEM.Data;
 using CRM_SYSTEM.DTO.Clients;
 using CRM_SYSTEM.Models;
+using CRM_SYSTEM.Repositories.Interfaces;
 using System.Security.Cryptography;
 
 namespace CRM_SYSTEM.Repositories

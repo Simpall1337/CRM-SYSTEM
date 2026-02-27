@@ -2,7 +2,7 @@
 using CRM_SYSTEM.Models;
 using Microsoft.AspNetCore.Http.Metadata;
 
-namespace CRM_SYSTEM.Repositories
+namespace CRM_SYSTEM.Repositories.Interfaces
 {
     public interface IClientsRepository: IRepository<Clients>
     {

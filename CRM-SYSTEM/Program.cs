@@ -1,6 +1,9 @@
 using CRM_SYSTEM.Data;
+using CRM_SYSTEM.Middleware;
 using CRM_SYSTEM.Repositories;
+using CRM_SYSTEM.Repositories.Interfaces;
 using CRM_SYSTEM.Services;
+using CRM_SYSTEM.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -17,7 +20,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IClientsService, ClientsService>()
-                .AddScoped<IClientsRepository, ClientsRepository>();
+                .AddScoped<IClientsRepository, ClientsRepository>()
+                .AddScoped<IRoleRepository, RoleRepository>()
+                .AddScoped<IRoleService, RoleService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -36,6 +41,8 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.SQLite(dbPath, tableName: "Logs")
     .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

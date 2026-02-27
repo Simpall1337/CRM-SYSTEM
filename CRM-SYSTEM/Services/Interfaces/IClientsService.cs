@@ -2,7 +2,7 @@
 using CRM_SYSTEM.Models;
 using CRM_SYSTEM.Repositories;
 
-namespace CRM_SYSTEM.Services
+namespace CRM_SYSTEM.Services.Interfaces
 {
     public interface IClientsService
     {

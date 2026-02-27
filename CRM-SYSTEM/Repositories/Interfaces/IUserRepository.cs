@@ -1,6 +1,6 @@
 ﻿using CRM_SYSTEM.Models;
 using CRM_SYSTEM.DTO.Users;
-namespace CRM_SYSTEM.Repositories
+namespace CRM_SYSTEM.Repositories.Interfaces
 {
     public interface IUserRepository: IRepository<Users>
     {

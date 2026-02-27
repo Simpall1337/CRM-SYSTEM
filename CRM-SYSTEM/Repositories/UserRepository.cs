@@ -1,6 +1,7 @@
 ﻿using CRM_SYSTEM.Data;
 using CRM_SYSTEM.DTO.Users;
 using CRM_SYSTEM.Models;
+using CRM_SYSTEM.Repositories.Interfaces;
 
 namespace CRM_SYSTEM.Repositories
 {

@@ -1,7 +1,8 @@
 ﻿using CRM_SYSTEM.CustomExceptions;
 using CRM_SYSTEM.DTO.Clients;
 using CRM_SYSTEM.Models;
-using CRM_SYSTEM.Repositories;
+using CRM_SYSTEM.Repositories.Interfaces;
+using CRM_SYSTEM.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRM_SYSTEM.Services

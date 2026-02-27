@@ -1,4 +1,4 @@
-﻿namespace CRM_SYSTEM.Repositories
+﻿namespace CRM_SYSTEM.Repositories.Interfaces
 {
     public interface IRepository<T>
     {

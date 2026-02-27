@@ -2,6 +2,7 @@
 using CRM_SYSTEM.Data;
 using CRM_SYSTEM.DTO.Roles;
 using CRM_SYSTEM.Models;
+using CRM_SYSTEM.Repositories.Interfaces;
 using System.Linq;
 
 namespace CRM_SYSTEM.Repositories

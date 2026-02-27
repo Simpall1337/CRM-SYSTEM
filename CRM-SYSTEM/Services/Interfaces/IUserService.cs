@@ -1,11 +1,12 @@
 ﻿using CRM_SYSTEM.DTO.Users;
 
-namespace CRM_SYSTEM.Services
+namespace CRM_SYSTEM.Services.Interfaces
 {
     public interface IUserService
     {
         public UserResponse Login(LoginRequest request);
         public UserResponse Register(RegisterRequest request);
         public UpdatedResponse Update(int userId, UpdateRequest update);
+        public void Delete(int userId);
     }
 }
