@@ -30,7 +30,7 @@ namespace CRM_SYSTEM.Repositories
             dbContext.Clients.Add(clients);
             dbContext.SaveChanges();
         }
-        public void Update()
+        public void Update(Clients clients)
         {
             dbContext.SaveChanges();
         }

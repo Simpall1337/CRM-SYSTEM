@@ -27,7 +27,7 @@ namespace CRM_SYSTEM.Repositories
             dbContext.Roles.Add(role);
             dbContext.SaveChanges();
         }
-        public void Update()
+        public void Update(Roles role)
         {
             dbContext.SaveChanges();
         }

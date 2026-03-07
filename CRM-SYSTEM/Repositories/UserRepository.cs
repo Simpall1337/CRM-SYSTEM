@@ -20,7 +20,7 @@ namespace CRM_SYSTEM.Repositories
             dbContext.Users.Add(user);
             dbContext.SaveChanges();
         }
-        public void Update()
+        public void Update(Users user)
         {
             dbContext.SaveChanges();
         }

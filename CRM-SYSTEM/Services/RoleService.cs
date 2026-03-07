@@ -50,7 +50,7 @@ namespace CRM_SYSTEM.Services
             if (!string.IsNullOrEmpty(request.description))
                 existingRole.description = request.description;
 
-            roleRepository.Update();
+            roleRepository.Update(existingRole);
 
             return new ResponseUpdate
             {

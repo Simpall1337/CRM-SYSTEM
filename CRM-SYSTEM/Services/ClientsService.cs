@@ -31,7 +31,7 @@ namespace CRM_SYSTEM.Services
                 email = request.email,
                 phone = request.phone,
                 address = request.address,
-                created_at = DateTime.Now
+                created_at = DateTime.UtcNow
             };
 
             clientsRepository.Add(client);
@@ -61,7 +61,7 @@ namespace CRM_SYSTEM.Services
             existingClient.phone = request.phone ?? existingClient.phone;
             existingClient.address = request.address ?? existingClient.address;
 
-            clientsRepository.Update();
+            clientsRepository.Update(existingClient);
 
             return new ClientsUpdateResponse
             {

@@ -1,4 +1,6 @@
-﻿using CRM_SYSTEM.DTO.Users;
+using CRM_SYSTEM.DTO.Users;
+using CRM_SYSTEM.Models;
+using CRM_SYSTEM.Services;
 using CRM_SYSTEM.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,12 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRM_SYSTEM.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
-    [AllowAnonymous]
+    [Authorize]
+    //[AllowAnonymous]
     [ApiController]
-    public class UsersController(IUserService userService) : ControllerBase
+    public class UsersController(IUserService userService,JwtService jwtService) : ControllerBase
     {
-        [HttpPost]
+        [AllowAnonymous]
+        [HttpPost("Login")]
         public IActionResult LoginUser([FromBody] LoginRequest request)
         {
             var userData = userService.Login(request);
@@ -22,9 +25,25 @@ namespace CRM_SYSTEM.Controllers
                 User = userData
             };
 
-            return Ok(response);
+            var token = jwtService.GenerateToken(
+               userData.id,
+               userData.email,
+               userData.login);
+
+            return Ok(new { token });
         }
-        [HttpPost]
+        [HttpGet("profile")]
+        public IActionResult ProfileUser()
+        {
+            var objResponse = new
+            {
+                userId = "1",
+                email = "san",
+                role = "adm"
+            };
+            return Ok(objResponse);
+        }
+        [HttpPost("Register")]
         public IActionResult RegisterUser([FromBody] RegisterRequest request)
         {
             var userData = userService.Register(request);
