@@ -31,7 +31,7 @@ namespace CRM_SYSTEM.Services
 
             return new ResponseCreate
             {
-                id = role.id,
+                id = role.role_id,
                 name = role.name,
                 description = role.description
             };
@@ -54,7 +54,7 @@ namespace CRM_SYSTEM.Services
 
             return new ResponseUpdate
             {
-                id = existingRole.id,
+                id = existingRole.role_id,
                 name = existingRole.name,
                 description = existingRole.description
             };

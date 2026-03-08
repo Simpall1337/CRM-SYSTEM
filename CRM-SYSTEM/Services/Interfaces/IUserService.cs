@@ -6,6 +6,7 @@ namespace CRM_SYSTEM.Services.Interfaces
     {
         public UserResponse Login(LoginRequest request);
         public UserResponse Register(RegisterRequest request);
+        public UserProfile GetProfile(string login);
         public UpdatedResponse Update(int userId, UpdateRequest update);
         public void Delete(int userId);
     }

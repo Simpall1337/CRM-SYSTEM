@@ -13,21 +13,19 @@ namespace CRM_SYSTEM.Services
     {
         public UserResponse Login(LoginRequest request)
         {
-            var user = userRepository.GetByLogin(request.login);
+            var user = userRepository.GetUserDataForToken(request.login);
 
             if (user == null)
                 throw new UserNotFoundException();
 
-            if (user.password != request.password)
-                throw new InvalidPasswordException();
+            //if (user.password != request.password)
+            //    throw new InvalidPasswordException();
 
             return new UserResponse
             {
                 id = user.id,
-                login = user.login,
-                fullName = $"{user.name} {user.surname}",
-                phone = user.phone,
-                email = user.email
+                email = user.email,
+                role = user.role
             };
         }
         public UserResponse Register(RegisterRequest request)
@@ -63,13 +61,27 @@ namespace CRM_SYSTEM.Services
 
             userRepository.Add(newUser);
 
-            return new UserResponse     
-            {   
-                fullName = $"{newUser.name} {newUser.surname}",
+            return new UserResponse
+            {
                 id = newUser.id,
-                login = newUser.login,
-                phone = newUser.phone,  
                 email = newUser.email,
+                role = "user"
+            };
+        }
+        public UserProfile GetProfile(string login)
+        {
+            var user = userRepository.GetByLogin(login);
+
+            if (user == null)
+                throw new UserNotFoundException();
+
+            return new UserProfile
+            {
+                name = user.name,
+                surname = user.surname,
+                email = user.email,
+                phone = user.phone,
+                login = user.login
             };
         }
         public UpdatedResponse Update(int userId, UpdateRequest request)

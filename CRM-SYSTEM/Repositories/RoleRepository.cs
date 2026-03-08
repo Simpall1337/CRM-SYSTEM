@@ -11,7 +11,7 @@ namespace CRM_SYSTEM.Repositories
     {
         public Roles? GetById(int id)
         {
-            return dbContext.Roles.FirstOrDefault(x => x.id == id);
+            return dbContext.Roles.FirstOrDefault(x => x.role_id == id);
         }
         public IEnumerable<Roles> GetAllRoles()
         {

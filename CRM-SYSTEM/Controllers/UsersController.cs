@@ -13,48 +13,38 @@ namespace CRM_SYSTEM.Controllers
     [ApiController]
     public class UsersController(IUserService userService,JwtService jwtService) : ControllerBase
     {
-        [AllowAnonymous]
         [HttpPost("Login")]
+        [AllowAnonymous]
         public IActionResult LoginUser([FromBody] LoginRequest request)
         {
             var userData = userService.Login(request);
 
-            var response = new
-            {
-                Message = "Login Successful",
-                User = userData
-            };
-
             var token = jwtService.GenerateToken(
                userData.id,
                userData.email,
-               userData.login);
+               userData.role);
 
             return Ok(new { token });
         }
         [HttpGet("profile")]
-        public IActionResult ProfileUser()
+        public IActionResult ProfileUser(string login)
         {
-            var objResponse = new
-            {
-                userId = "1",
-                email = "san",
-                role = "adm"
-            };
-            return Ok(objResponse);
+            var userProfile = userService.GetProfile(login);
+
+            return Ok(userProfile);
         }
         [HttpPost("Register")]
+        [AllowAnonymous]
         public IActionResult RegisterUser([FromBody] RegisterRequest request)
         {
             var userData = userService.Register(request);
 
-            var response = new
-            {
-                Message = "Registration Successful",
-                User = userData
-            };
+            var token = jwtService.GenerateToken(
+              userData.id,
+              userData.email,
+              userData.role);
 
-            return Created($"/api/users/{userData.id}", response);
+            return Created($"/api/users/{userData.id}", token);
         }
         [HttpPut]
         public IActionResult UpdateUser([FromBody] UpdateRequest request)
