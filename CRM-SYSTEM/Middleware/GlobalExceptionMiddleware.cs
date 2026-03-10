@@ -53,6 +53,7 @@ namespace CRM_SYSTEM.Middleware
 
                 case ClientNotFoundException:
                 case NotFoundRoleException:
+                case OrderNotFoundException:
                     statusCode = StatusCodes.Status404NotFound;
                     response = new { message = exception.Message };
                     break;

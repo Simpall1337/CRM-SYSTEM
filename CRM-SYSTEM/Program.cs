@@ -63,7 +63,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IClientsRepository, ClientsRepository>()
                 .AddScoped<IRoleRepository, RoleRepository>()
                 .AddScoped<IRoleService, RoleService>()
-                .AddScoped<JwtService>();
+                .AddScoped<JwtService>()
+                .AddScoped<IOrdersRepository, OrdersRepository>()
+                .AddScoped<IOrdersService, OrdersService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
